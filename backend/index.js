@@ -7,9 +7,18 @@ const notifications = [];
 const typeDefs = `
   type Query { notifications: [Notification] }
   type Notification { label: String }
+  type Mutation { pushNotification(label: String!): Notification }
 `;
 const resolvers = {
   Query: { notifications: () => notifications },
+  Mutation: {
+      pushNotification: (root, args) => {
+        const newNotification = { label: args.label };
+        notifications.push(newNotification);
+
+        return newNotification;
+      },
+  },
 };
 const schema = makeExecutableSchema({ typeDefs, resolvers });
 
